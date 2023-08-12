@@ -7,51 +7,22 @@ using namespace std;
 int main () {
 
 string s="DCXXI";//500+100+10+10+1=621
-int mynum[s.length()];
 
-for(int i=0;i<s.length();i++){
-    switch (s[i])
-    {
-    case 'I' :
-        mynum[i]=1;
-        break;
-    case 'V' :
-        mynum[i]=5;
-        break;
-    case 'X' :
-        mynum[i]=10;
-        break;
-    case 'L' :
-        mynum[i]=50;
-        break;
-    case 'C' :
-        mynum[i]=100;
-        break;
-    case 'D' :
-        mynum[i]=500;
-        break;
-    
-    default:
-    mynum[i]=1000;
-        break;
-    }
-}
- unordered_map<int, int> map;
+ unordered_map<int, int> map={
+      {'I', 1}, {'V', 5}, {'X', 10},
+        {'L', 50}, {'C', 100}, {'D', 500},
+        {'M', 1000}
+ };
+
  int sum=0;
-  for (int i = 0; i < s.length()-1; i++) {
-    if(mynum[i]>mynum[i+1])
-    {sum+=mynum[i];
-    }
-   else if(mynum[i]<mynum[i+1])
-    {sum+=mynum[i+1]-mynum[i];
-    i++;
-   }
-    else
-    sum+=mynum[i];
+  for (int i = 0; i < s.length(); i++) {
+    int current =map[s[i]];
 
-    if(i==s.length()-2)
-    {sum+=mynum[i+1];
-    }
+// To must ensure that the last char is add to the sum
+    if(i<s.length()-1 && current<map[s[i+1]])
+        sum-=current;
+    else 
+    sum+=current;
   }
 
 cout<<sum;//621
