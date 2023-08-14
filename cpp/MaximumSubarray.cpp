@@ -8,23 +8,14 @@ int main()
 {
 
     vector<int> nums = {-2, -3, -1, 0};
-    long max = nums[0];
+    int max = INT_MIN;
+    int currentSum = 0;
+
     for (int i = 0; i < nums.size(); i++)
     {
-        long sum = nums[i];
-
-        max = sum > max ? sum : max;
-
-        if (i == nums.size() - 1)
-            continue;
-
-        for (int j = i + 1; j < nums.size(); j++)
-        {
-            sum += nums[j];
-
-            if (sum > max)
-                max = sum;
-        }
+        currentSum += nums[i];
+        max = currentSum > max ? currentSum : max;
+        currentSum = currentSum < 0 ? 0 : currentSum; // if currentSum is negative, it's not a favorable subarray
     }
     cout << max;
     return 0;
