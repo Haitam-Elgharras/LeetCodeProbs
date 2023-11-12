@@ -23,100 +23,34 @@ class Solution
 public:
     ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
     {
-        ListNode *tmp1, *tmp2;
-        tmp1 = l1;
-        tmp2 = l2;
-        int rest = 0;
-        ListNode *listNode = new ListNode();
-        ListNode *tmp3 = listNode;
-        bool first = true;
-        while (tmp1 != nullptr || tmp2 != nullptr)
+        ListNode *dummy = new ListNode(0); // Dummy node to store the result
+        ListNode *current = dummy;         // Pointer to the current node in the result
+
+        int carry = 0; // Variable to store the carry-over (remainder)
+
+        while (l1 || l2 || carry)
         {
-            if (tmp1 == nullptr || tmp2 == nullptr)
-                break;
-
-            int num = tmp1->val + tmp2->val + tmp3->val;
-
-            if (num > 9)
+            // Calculate the sum of current digits and carry-over
+            int sum_val = carry;
+            if (l1)
             {
-
-                tmp3->val = num % 10;
-
-                rest = num / 10;
-                tmp3->next = new ListNode(rest);
-                tmp3 = tmp3->next;
-
-                tmp1 = tmp1->next;
-                tmp2 = tmp2->next;
-                first = false;
-                continue;
+                sum_val += l1->val;
+                l1 = l1->next;
             }
-            else
+            if (l2)
             {
-                tmp3->val = num;
-                first = true;
+                sum_val += l2->val;
+                l2 = l2->next;
             }
 
-            tmp1 = tmp1->next;
-            tmp2 = tmp2->next;
-            if (tmp1 != nullptr && tmp2 != nullptr)
-            {
-                tmp3->next = new ListNode();
-                tmp3 = tmp3->next;
-            }
+            // Create a new node for the sum digit
+            int digit = sum_val % 10;
+            carry = sum_val / 10;
+            current->next = new ListNode(digit);
+            current = current->next;
         }
 
-        while (tmp1 != nullptr)
-        {
-            int num = tmp1->val + tmp3->val;
-            if (!first && num > 9)
-            {
-                tmp3->val = num % 10;
-
-                rest = num / 10;
-                tmp3->next = new ListNode(rest);
-                tmp3 = tmp3->next;
-
-                tmp1 = tmp1->next;
-                continue;
-            }
-
-            tmp3->val = num;
-
-            tmp1 = tmp1->next;
-            if (tmp1 != nullptr)
-            {
-                tmp3->next = new ListNode();
-                tmp3 = tmp3->next;
-            }
-        }
-
-        while (tmp2 != nullptr)
-        {
-            int num = tmp2->val + tmp3->val;
-            if (!first && num > 9)
-            {
-                tmp3->val = num % 10;
-
-                rest = num / 10;
-                tmp3->next = new ListNode(rest);
-                tmp3 = tmp3->next;
-
-                tmp2 = tmp2->next;
-                continue;
-            }
-
-            tmp3->val = num;
-
-            tmp2 = tmp2->next;
-            if (tmp2 != nullptr)
-            {
-                tmp3->next = new ListNode();
-                tmp3 = tmp3->next;
-            }
-        }
-
-        return listNode;
+        return dummy->next; // Return the result linked list starting from the next node of the dummy
     }
 };
 
